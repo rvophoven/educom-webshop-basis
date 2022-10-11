@@ -1,17 +1,38 @@
+<!-- Contact page-->
 <!DOCTYPE html>
 <html>
   <head>
 
   </head>
   <body>
-    <h1>Contact page</h1>
-    <ul>
-      <li><a href="index.html">HOME</a></li>
-      <li><a href="about.html">ABOUT</a></li>
-      <li><a href="contact.html">CONTACT</a></li>
-    </ul>
+
+      <h1>Contact page</h1>
+      <ul><!-- links to other pages-->
+        <li><a href="index.html">HOME</a></li>
+        <li><a href="about.html">ABOUT</a></li>
+        <li><a href="contact.html">CONTACT</a></li>
+      </ul>
+    
+      <form><!--make a form and sending info is for later-->
+        Salutation:
+        <select name="salutation"> 
+          <option value="dhr">Dhr</option>
+          <option value="mvr">Mvr</option>
+          <option value="beste">Beste</option>
+        </select><br>
+        Name:<input type="text" name="name" id="name"><br>
+        Email:<input type="text" name="email" id="email"><br>
+        Number:<input type="text" name="number" id="number"><br>
+        Respons by:
+        <input type="radio" name="methode" id="methodeEmail" value="Email"><label>:Email</label>
+        <input type="radio" name="methode" id="methodeNumber" value="Number"><label>:Number</label><br>
+        Message:<br><textarea name="message" id="message" rows="5" cols="40"></textarea><br>
+        Send:<input type="submit" name="sendbutton" id="sendButton" value="Send"><br>
+      </form>
+ 
     <footer>
       <p>&copy; 2022 Ramon van Ophoven</p>
     </footer>
+
   </body>
 </html>
