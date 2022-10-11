@@ -1,1 +1,63 @@
-/* Cascade Style Sheet for this website */
+/* style full file*/
+html, body{
+ padding:0 !important;
+ max-width: 800px;
+ margin: auto;
+ font-family: Arial, Helvetica, sans-serif;
+}
+/* style head box*/
+.navigation{
+  background-color:rgba(50, 50, 50, 0.5);
+}
+/* style page title*/
+.titlePage{
+  font-size: 48px;
+  text-align: center;
+}
+/* style links box*/
+.links{
+font-size: 15px;
+display: inline;
+border: 2px solid;
+border-color: black;
+/*move links
+position: relative;
+left: 590px;*/
+background-color:rgba(0, 10, 200, 0.8);
+}
+/* style all links*/
+a {
+  text-decoration: none;
+  color: #FFF;
+}
+/* style all paragraphs*/
+p {
+  margin: 0px;/*remove white space*/
+  padding: 0px;
+}
+/*style all mid sections*/
+section{
+  background-color: #FFF;
+  font-size: 12px;
+  color: rgba(20,20,20,1);
+}
+input[type=text]{
+  width: 400px;
+}
+/*style foot note*/
+.footnote{
+  background-color: #000;
+  text-align: right;
+  font-size: 10px;
+  color: #FFF;
+}
+/*useful for later*/
+.contentIndex{
+  
+}
+.contentAbout{
+  
+}
+.contentContact{
+  
+}

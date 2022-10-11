@@ -2,37 +2,44 @@
 <!DOCTYPE html>
 <html>
   <head>
-
+    <link rel="stylesheet" href="css/stylesheet.css">
   </head>
   <body>
+    <!--head section page-------------------------------------------------------------------->
+    <header class="navigation">
+      <div class="titlePage">Contact page</div>
 
-      <h1>Contact page</h1>
-      <ul><!-- links to other pages-->
-        <li><a href="index.html">HOME</a></li>
-        <li><a href="about.html">ABOUT</a></li>
-        <li><a href="contact.html">CONTACT</a></li>
-      </ul>
-    
-      <form><!--make a form and sending info is for later-->
-        Salutation:
+      <div class="links">
+        <a href="index.html">HOME -</a>
+        <a href="about.html">ABOUT -</a>
+        <a href="contact.html">CONTACT</a>
+      </div>
+    </header>
+
+    <!--mid section page-------------------------------------------------------------------->
+    <section class="contentContact">
+      <form><!--make a form. Sending info is for later-->
+        <label>Salutation:</label>
         <select name="salutation"> 
           <option value="dhr">Dhr</option>
           <option value="mvr">Mvr</option>
           <option value="beste">Beste</option>
         </select><br>
-        Name:<input type="text" name="name" id="name"><br>
-        Email:<input type="text" name="email" id="email"><br>
-        Number:<input type="text" name="number" id="number"><br>
-        Respons by:
+        <label>Name:</label><input type="text" name="name" id="name"><br>
+        <label>Email:</label><input type="text" name="email" id="email"><br>
+        <label>Number:</label><input type="text" name="number" id="number"><br>
+        <label>Respons by:</label>
         <input type="radio" name="methode" id="methodeEmail" value="Email"><label>:Email</label>
         <input type="radio" name="methode" id="methodeNumber" value="Number"><label>:Number</label><br>
-        Message:<br><textarea name="message" id="message" rows="5" cols="40"></textarea><br>
-        Send:<input type="submit" name="sendbutton" id="sendButton" value="Send"><br>
+        <label>Message:</label><br><textarea name="message" id="message" rows="5" cols="40"></textarea><br>
+        <label>Send:</label><input type="submit" name="sendbutton" id="sendButton" value="Send"><br>
       </form>
- 
-    <footer>
-      <p>&copy; 2022 Ramon van Ophoven</p>
-    </footer>
+    </section>
+     
+    <!--bottum section page-------------------------------------------------------------------->
+      <footer class="footnote">
+        <p>&copy; 2022 Ramon van Ophoven</p>
+      </footer>
 
   </body>
 </html>
