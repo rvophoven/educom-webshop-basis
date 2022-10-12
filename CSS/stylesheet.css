@@ -51,6 +51,9 @@ input[type=text]{
   font-size: 10px;
   color: #FFF;
 }
+.error{
+  color: rgba(255,0,0,1)
+}
 /*useful for later*/
 .contentIndex{
   
