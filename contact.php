@@ -64,9 +64,9 @@
       <div class="titlePage">Contact page</div>
 
       <div class="links">
-        <a href="index.html">HOME -</a>
-        <a href="about.html">ABOUT -</a>
-        <a href="contact.php">CONTACT</a>
+        <a href="index.php?page=home">HOME -</a>
+        <a href="index.php?page=about">ABOUT -</a>
+        <a href="index.php?page=contact">CONTACT </a>
       </div>
     </header>
 
