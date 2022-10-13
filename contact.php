@@ -4,6 +4,7 @@
          <!--show or dont show form-->
 
       <form method="post" action="index.php"> <!--make a form-->
+        <input type="hidden" name="file" value="contactF">
         <!--Choose salutation-->
         <label>Salutation:</label>
         <select name="salutation"> 
@@ -27,8 +28,5 @@
         <!--Send button to send form and data to server-->
         <label>Send:</label><input type="submit" name="sendbutton" value="Send"><br>
       </form>
-      <!-- All 4 fields okay? Show thank you and send information -->
-      <?php 
-       ?>  
     </section>
 

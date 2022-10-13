@@ -22,7 +22,7 @@
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
           return $_GET['page'];
         }elseif ($_SERVER["REQUEST_METHOD"] == "POST"){
-          return "index";
+          return test_input($_REQUEST["file"]);
         }else{
           
         }
@@ -87,14 +87,44 @@
       
   // --Show the different pages--------------------------------------------------------------
     function showPage($page){ 
-      $salutation = $name = $email = $number = $message = $methode = "";
-      $nameErr = $emailErr = $numberErr = $messageErr = "";
+      $salutation = $name = $email = $number = $message = $methode = $pass = $passRe ="";
+      $nameErr = $emailErr = $numberErr = $messageErr = $nameReErr = $emailReErr = $passErr = $rePassErr ="";
           ?>  
   <!--top section page-------------------------------------------------------------------->
           <header class="navigation">
           <!--Show differen title-->
           <?php 
-          echo '<div class="titlePage">'. $page .' page</div>'; //page titel
+          switch($page){
+            case "home":
+              echo '<div class="titlePage">Home page</div>';
+              break;
+            case "about":
+              echo '<div class="titlePage">About page</div>';
+              break;
+            case "contact":
+              echo '<div class="titlePage">Contact page</div>';
+              break;
+            case "register":
+                echo '<div class="titlePage">Register page</div>';
+                break;
+            case "login":
+                echo '<div class="titlePage">Login page</div>';
+                break;
+            case "logout":
+                echo '<div class="titlePage">Logout page</div>';
+                break;
+            case "contactF":
+              echo '<div class="titlePage">Contact page</div>';
+              break;
+            case "registerF":
+              echo '<div class="titlePage">Register page</div>';
+              break;
+            case "loginF":
+              echo '<div class="titlePage">Login page</div>';
+              break;
+            default:
+            echo '<div class="titlePage">No content page</div>';
+          }
           ?>
           <!--Show links -->
             <div class="links">
@@ -109,31 +139,24 @@
           <!--mid section page-------------------------------------------------------------------->
           <?php 
               // switch between mid sections 
-              switch($page){
-                case "home":
-                  include $page . ".php";
-                  break;
-                case "about":
-                  include $page . ".php";
-                  break;
-                case "contact":
-                  include $page . ".php";
-                  break;
-                case "register":
-                    include $page . ".php";
+              if(($page =="home")||($page =="about")||($page =="contact")||($page =="register")||($page =="login")||($page =="logout")){
+                include $page . ".php";
+              }else{
+                switch($page){
+                  case "contactF": // at form load form on page
+                    getForm(); 
                     break;
-                case "login":
-                    include $page . ".php";
+                  case "registerF": // at form load form on page
+                    getRegister(); 
                     break;
-                case "logout":
-                    include $page . ".php";
+                  case "loginF": // at form load form on page
+                    getLogin(); 
                     break;
-                case "index": // at form load form on page
-                  getForm(); 
-                  break;
-                default:
-                echo "Wrong page link";
-              } 
+                  default:
+                  echo "Wrong page link";
+                } 
+              }
+              
           ?>
           <!--bottum section page-------------------------------------------------------------------->
           <footer class="footnote">
