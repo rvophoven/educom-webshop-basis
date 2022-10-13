@@ -1,80 +1,9 @@
 <!-- Contact page-->
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" href="css/stylesheet.css">
-  </head>
-  <body>
-    <!--php code-------------------------------------------------------------------->
-    <?php
-      //define variables
-      $salutation = $name = $email = $number = $message = $methode = "";
-      $nameErr = $emailErr = $numberErr = $messageErr = "";
-      $valid = 0;
-
-      if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-        //First filter al values
-        $salutation = test_input($_POST["salutation"]);
-        $name = test_input($_POST["name"]);
-        $email = test_input($_POST["email"]);
-        $number = test_input($_POST["number"]);
-        $message = test_input($_POST["message"]);
-        $methode = test_input($_POST["methode"]);
-
-        //check field for correct data
-        if (empty($name)) {
-          $nameErr = "Name is required";
-        } else{
-          $valid ++;
-        }
-        
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)||empty($email)){
-          $emailErr = "Invalid email format";
-        } else{
-         $valid ++;
-        }
-
-        if (empty($number)){
-          $numberErr = "No number";
-        }elseif (!preg_match('/^[0-9]*$/',$number)){
-          $numberErr = "Invalid number";
-        }else{
-          $valid ++;
-        }
-
-        if (empty($message)) {
-          $messageErr = "Empty field";
-        } else{
-          $valid ++;
-        }
-  
-      }
-      // filter data recieved. Trim, remove slashes and replace html script.
-      function test_input($data) {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
-      }
-    ?>
-
-    <!--head section page-------------------------------------------------------------------->
-    <header class="navigation">
-      <div class="titlePage">Contact page</div>
-
-      <div class="links">
-        <a href="index.php?page=home">HOME -</a>
-        <a href="index.php?page=about">ABOUT -</a>
-        <a href="index.php?page=contact">CONTACT </a>
-      </div>
-    </header>
-
     <!--mid section page-------------------------------------------------------------------->
     <section class="contentContact">
-      <?php if ($valid <= 3){ ?>   <!--show or dont show form-->
+         <!--show or dont show form-->
 
-      <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> <!--make a form-->
+      <form method="post" action="index.php"> <!--make a form-->
         <!--Choose salutation-->
         <label>Salutation:</label>
         <select name="salutation"> 
@@ -99,21 +28,7 @@
         <label>Send:</label><input type="submit" name="sendbutton" value="Send"><br>
       </form>
       <!-- All 4 fields okay? Show thank you and send information -->
-      <?php }else { 
-        echo "<h2>Thank you for your input:</h2>";
-        echo $salutation . "  " . $name . "<br>";
-        echo $email . "<br>";
-        echo $number . "<br>";
-        echo $message . "<br>";
-        echo "We wil message you by:" . $methode . "<br>";
-      }
+      <?php 
        ?>  
     </section>
-     
-    <!--bottum section page-------------------------------------------------------------------->
-      <footer class="footnote">
-        <p>&copy; 2022 Ramon van Ophoven</p>
-      </footer>
 
-  </body>
-</html>
