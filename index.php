@@ -80,6 +80,10 @@
                 echo "We wil message you by:" . $methode . "<br>";
             } 
       }
+
+      function getRegister(){}
+      function getLogin(){}
+      function getLogOut(){}
       
   // --Show the different pages--------------------------------------------------------------
     function showPage($page){ 
@@ -90,28 +94,16 @@
           <header class="navigation">
           <!--Show differen title-->
           <?php 
-          switch($page){
-            case "home":
-              echo '<div class="titlePage">Home page</div>';
-              break;
-            case "about":
-              echo '<div class="titlePage">About page</div>';
-              break;
-            case "contact":
-              echo '<div class="titlePage">Contact page</div>';
-              break;
-            case "index":
-              echo '<div class="titlePage">Contact page</div>';
-              break;
-            default:
-            echo '<div class="titlePage">No content page</div>';
-          }
+          echo '<div class="titlePage">'. $page .' page</div>'; //page titel
           ?>
           <!--Show links -->
             <div class="links">
               <a href="index.php?page=home">HOME -</a>
               <a href="index.php?page=about">ABOUT -</a>
-              <a href="index.php?page=contact">CONTACT </a>
+              <a href="index.php?page=contact">CONTACT -</a>
+              <a href="index.php?page=register">REGISTER -</a>
+              <a href="index.php?page=login">LOGIN -</a>
+              <a href="index.php?page=logout">LOGOUT</a>
             </div>
           </header>
           <!--mid section page-------------------------------------------------------------------->
@@ -127,6 +119,15 @@
                 case "contact":
                   include $page . ".php";
                   break;
+                case "register":
+                    include $page . ".php";
+                    break;
+                case "login":
+                    include $page . ".php";
+                    break;
+                case "logout":
+                    include $page . ".php";
+                    break;
                 case "index": // at form load form on page
                   getForm(); 
                   break;
