@@ -148,13 +148,20 @@
 
         $filename = "USERS/users.txt";
         $fileOpen = fopen($filename, "r") or die("Unable to open file!");
-        $fileData = fread($fileOpen,filesize($filename));
+       // $fileData = "";
+        $fileLine = fgets($fileOpen);
         $emailSearch = "/".$email."/i";
         $passSearch = "/".$pass."/i";
 
+        //search for email in file
+        while((!feof($fileOpen))&&(!preg_match($emailSearch, $fileLine))){
+          $fileLine = fgets($fileOpen);
+        }
+        
+
         if (empty($email)){
           $emailErr = "Field empty";
-        }elseif(!preg_match($emailSearch, $fileData)){
+        }elseif(feof($fileOpen) == true){ //was email found?
           $emailErr = "Email not found";
         }else{
           $valid ++;
@@ -170,15 +177,7 @@
         {
           include "login.php";
         }else{
-          fclose($fileOpen);
-          $fileOpen = fopen($filename, "r") or die("Unable to open file!");
-          $fileLine = fgets($fileOpen);
-
-          while((feof($fileOpen))||(!preg_match($emailSearch, $fileLine))) {
-            $fileLine = fgets($fileOpen);
-          }
-
-          if(!preg_match($passSearch, $fileLine)){
+          if(!preg_match($passSearch, $fileLine)){ //check if password is correct
             $passErr = "Password incorrect";
             include "login.php";
             fclose($fileOpen);
