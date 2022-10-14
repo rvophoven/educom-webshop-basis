@@ -87,7 +87,7 @@
       }
 
       function getRegister(){
-        $valid = 0;
+          $valid = 0;
           $name = $email = $pass = $passRe = "";
           $nameErr = $emailErr = $passErr  = "";
 
@@ -124,7 +124,7 @@
             $filename = "USERS/users.txt";
             $fileOpen = fopen($filename, "a+") or die("Unable to open file!");
             $fileData = fread($fileOpen,filesize($filename));
-            $fileSearch = "/".$email."/i";
+            $emailSearch = "/".$email."/i";
             //check email
             if(preg_match($fileSearch, $fileData)){
               include "register.php";
@@ -138,7 +138,58 @@
           }    
       }
 
-      function getLogin(){}
+      function getLogin(){
+        $valid = 0;
+        $email = $pass = "";
+        $emailErr = $passErr  = "";
+
+        $email = test_input($_REQUEST["email"]);
+        $pass = test_input($_REQUEST["pass"]);
+
+        $filename = "USERS/users.txt";
+        $fileOpen = fopen($filename, "r") or die("Unable to open file!");
+        $fileData = fread($fileOpen,filesize($filename));
+        $emailSearch = "/".$email."/i";
+        $passSearch = "/".$pass."/i";
+
+        if (empty($email)){
+          $emailErr = "Field empty";
+        }elseif(!preg_match($emailSearch, $fileData)){
+          $emailErr = "Email not found";
+        }else{
+          $valid ++;
+        }
+
+        if (empty($pass)){
+          $passErr = "Field empty";
+        }else {
+          $valid ++;
+        }
+
+        if($valid<=1)
+        {
+          include "login.php";
+        }else{
+          fclose($fileOpen);
+          $fileOpen = fopen($filename, "r") or die("Unable to open file!");
+          $fileLine = fgets($fileOpen);
+
+          while((feof($fileOpen))||(!preg_match($emailSearch, $fileLine))) {
+            $fileLine = fgets($fileOpen);
+          }
+
+          if(!preg_match($passSearch, $fileLine)){
+            $passErr = "Password incorrect";
+            include "login.php";
+            fclose($fileOpen);
+          }else{
+            echo "<h2>You are logged in</h2>";
+            fclose($fileOpen);
+          }
+        }
+
+        
+      }
       function getLogOut(){}
       
   // --Show the different pages--------------------------------------------------------------
