@@ -1,4 +1,8 @@
 <!-- Welkom page-->
+<?php
+session_start();// set session
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +13,7 @@
       
         $page = getRequestedPage();
         showPage($page);
+        
 
       // filter data recieved. Trim, remove slashes and replace html script.
        function test_input($data) {
@@ -18,7 +23,7 @@
         return $data;
       }
       // 
-      function getRequestedPage() {
+      function getRequestedPage() {// check for com type
         if ($_SERVER["REQUEST_METHOD"] == "GET") {
           return $_GET['page'];
         }elseif ($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -97,19 +102,19 @@
           $passRe = test_input($_REQUEST["passRe"]);
 
           //check field for correct data
-          if (empty($name)) {
+          if (empty($name)) {//check is name is empty
             $nameErr = "Name is required";
           } else{
             $valid ++;
           }
             
-          if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+          if (!filter_var($email, FILTER_VALIDATE_EMAIL)){//validate email
             $emailErr = "Invalid email format";
           } else{
             $valid ++;
           }
 
-          if ((empty($pass))||(empty($passRe))){
+          if ((empty($pass))||(empty($passRe))){//check if passwords are empty
             $passErr = "Field empty";
           } elseif ($pass != $passRe){
             $passErr = "Fields dont match";
@@ -124,31 +129,32 @@
             $filename = "USERS/users.txt";
             $fileOpen = fopen($filename, "a+") or die("Unable to open file!");
             $fileData = fread($fileOpen,filesize($filename));
-            $emailSearch = "/".$email."/i";
+            $fileSearch = "/".$email."/i";
             //check email
-            if(preg_match($fileSearch, $fileData)){
+            if(preg_match($fileSearch, $fileData) == true){//check if email already exists
               include "register.php";
               echo "<h4>Email already exists</h4>";
             }else{// if info good show thank you
-              $fileText = "\n".$name."|".$email."|".$pass;
+              $fileText = "\n".$email."|".$name."|".$pass;
               fwrite($fileOpen, $fileText);
-              echo "<h2>Thank you for making a account:</h2>";
               fclose($fileOpen);
+              header('Location: index.php?page=login');//redirect to login page
+              echo "<h2>Thank you for making a account:</h2>";
+              
             }
           }    
       }
 
       function getLogin(){
         $valid = 0;
-        $email = $pass = "";
+        $name = $email = $pass = "";
         $emailErr = $passErr  = "";
 
         $email = test_input($_REQUEST["email"]);
         $pass = test_input($_REQUEST["pass"]);
 
-        $filename = "USERS/users.txt";
+        $filename = "USERS/users.txt";//get data file/database
         $fileOpen = fopen($filename, "r") or die("Unable to open file!");
-       // $fileData = "";
         $fileLine = fgets($fileOpen);
         $emailSearch = "/".$email."/i";
         $passSearch = "/".$pass."/i";
@@ -159,15 +165,15 @@
         }
         
 
-        if (empty($email)){
+        if (empty($email)){//filter email
           $emailErr = "Field empty";
-        }elseif(feof($fileOpen) == true){ //was email found?
+        }elseif((feof($fileOpen) == true) && (!preg_match($emailSearch, $fileLine))){ //does email exist in database
           $emailErr = "Email not found";
         }else{
           $valid ++;
         }
 
-        if (empty($pass)){
+        if (empty($pass)){ //is pasword empty
           $passErr = "Field empty";
         }else {
           $valid ++;
@@ -177,19 +183,28 @@
         {
           include "login.php";
         }else{
-          if(!preg_match($passSearch, $fileLine)){ //check if password is correct
+          if(!preg_match($passSearch, $fileLine)){ //check if password is correct with email
             $passErr = "Password incorrect";
             include "login.php";
             fclose($fileOpen);
-          }else{
-            echo "<h2>You are logged in</h2>";
+          }else{// if password correct login and redirect to home page
+            $_SESSION["Login"] = true; // set login to true
+            $pattern = "/[|\s:]/";
+            $name = preg_split($pattern, $fileLine);// split data in database
+            $_SESSION["Name"] = $name[1]; // set sesion name for pages      
+            header('Location: index.php?page=home');//redirect to home page
             fclose($fileOpen);
+
           }
         }
 
-        
       }
-      function getLogOut(){}
+
+      function getLogOut(){// logout user
+        session_unset(); // delet session
+        $_SESSION["Login"] = false; //set login again to show links
+        header('Location: index.php?page=home');//redirect to home page
+      }
       
   // --Show the different pages--------------------------------------------------------------
     function showPage($page){ 
@@ -228,6 +243,9 @@
             case "loginF":
               echo '<div class="titlePage">Login page</div>';
               break;
+            case "logoutF":
+              echo '<div class="titlePage">Logout page</div>';
+              break;
             default:
             echo '<div class="titlePage">No content page</div>';
           }
@@ -237,9 +255,15 @@
               <a href="index.php?page=home">HOME -</a>
               <a href="index.php?page=about">ABOUT -</a>
               <a href="index.php?page=contact">CONTACT -</a>
-              <a href="index.php?page=register">REGISTER -</a>
-              <a href="index.php?page=login">LOGIN -</a>
-              <a href="index.php?page=logout">LOGOUT</a>
+              <?php  
+              if ($_SESSION["Login"] == true){// if logged in show logout and name
+                 echo '<a href="index.php?page=logout">LOGOUT   :  ' .$_SESSION["Name"].'</a>';
+              }else{// if logged out show register and login
+                echo '<a href="index.php?page=register">REGISTER -</a>';
+                echo '<a href="index.php?page=login">LOGIN</a>';
+              }
+              ?>
+              
             </div>
           </header>
           <!--mid section page-------------------------------------------------------------------->
@@ -257,6 +281,9 @@
                     break;
                   case "loginF": // at form load form on page
                     getLogin(); 
+                    break;
+                  case "logoutF": // at form load form on page
+                    getLogout(); 
                     break;
                   default:
                   echo "Wrong page link";
