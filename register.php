@@ -11,7 +11,7 @@
         <!--Fill in password. Is checked if empty/valid-->
         <label>Password:</label><input type="text" name="pass" value="<?php echo $pass;?>"> <span class="error"><?php echo $passErr;?></span><br>
         <!--Repeat password. Is checked if empty/valid-->
-        <label>Password:</label><input type="text" name="passRe" value="<?php echo $passRe;?>"> <span class="error"><?php echo $rePassErr;?></span><br>
+        <label>Password:</label><input type="text" name="passRe" value="<?php echo $passRe;?>"><br>
         <!--Send button to send form and data to server-->
         <label>Send:</label><input type="submit" name="sendbutton" value="Send"><br>
       </form>

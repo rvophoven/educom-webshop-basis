@@ -28,13 +28,15 @@
         }
       }
 
-      function getForm(){
+      function getContact(){
             //define variables        
             $valid = 0;
-            $salutation = $name = $email = $number = $message = $methode = "";
-            $nameErr = $emailErr = $numberErr = $messageErr = "";
+            $file = $salutation = $name = $email = $number = $message = $methode ="";
+            $nameErr = $emailErr = $numberErr = $messageErr = $nameReErr = $emailReErr ="";
         
             //First filter al values
+            $file = test_input($_REQUEST["file"]);
+
             $salutation = test_input($_REQUEST["salutation"]);
             $name = test_input($_REQUEST["name"]);
             $email = test_input($_REQUEST["email"]);
@@ -42,6 +44,7 @@
             $message = test_input($_REQUEST["message"]);
             $methode = test_input($_REQUEST["methode"]);
 
+          
             //check field for correct data
             if (empty($name)) {
               $nameErr = "Name is required";
@@ -49,7 +52,7 @@
               $valid ++;
             }
             
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)||empty($email)){
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
               $emailErr = "Invalid email format";
             } else{
             $valid ++;
@@ -68,27 +71,80 @@
             } else{
               $valid ++;
             }
-      
-            if($valid <=3){//if field invalid reload form with error
-              include "contact.php";
-            }else{// if info good show thank you
+            
+             if($valid <=3){//if field invalid reload form with error
+                include "contact.php";
+              }else{// if info good show thank you
                 echo "<h2>Thank you for your input:</h2>";
                 echo $salutation . "  " . $name . "<br>";
                 echo $email . "<br>";
                 echo $number . "<br>";
                 echo $message . "<br>";
                 echo "We wil message you by:" . $methode . "<br>";
-            } 
+              }
+                      
+                
       }
 
-      function getRegister(){}
+      function getRegister(){
+        $valid = 0;
+          $name = $email = $pass = $passRe = "";
+          $nameErr = $emailErr = $passErr  = "";
+
+          $name = test_input($_REQUEST["name"]);
+          $email = test_input($_REQUEST["email"]);
+          $pass = test_input($_REQUEST["pass"]);
+          $passRe = test_input($_REQUEST["passRe"]);
+
+          //check field for correct data
+          if (empty($name)) {
+            $nameErr = "Name is required";
+          } else{
+            $valid ++;
+          }
+            
+          if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $emailErr = "Invalid email format";
+          } else{
+            $valid ++;
+          }
+
+          if ((empty($pass))||(empty($passRe))){
+            $passErr = "Field empty";
+          } elseif ($pass != $passRe){
+            $passErr = "Fields dont match";
+          } else {
+            $valid ++;
+          }
+
+          if($valid <=2){//if field invalid reload form with error
+            include "register.php";
+          }else{
+            //open textfile and get data
+            $filename = "USERS/users.txt";
+            $fileOpen = fopen($filename, "a+") or die("Unable to open file!");
+            $fileData = fread($fileOpen,filesize($filename));
+            $fileSearch = "/".$email."/i";
+            //check email
+            if(preg_match($fileSearch, $fileData)){
+              include "register.php";
+              echo "<h4>Email already exists</h4>";
+            }else{// if info good show thank you
+              $fileText = "\n".$name."|".$email."|".$pass;
+              fwrite($fileOpen, $fileText);
+              echo "<h2>Thank you for making a account:</h2>";
+              fclose($fileOpen);
+            }
+          }    
+      }
+
       function getLogin(){}
       function getLogOut(){}
       
   // --Show the different pages--------------------------------------------------------------
     function showPage($page){ 
-      $salutation = $name = $email = $number = $message = $methode = $pass = $passRe ="";
-      $nameErr = $emailErr = $numberErr = $messageErr = $nameReErr = $emailReErr = $passErr = $rePassErr ="";
+      $file = $salutation = $name = $email = $number = $message = $methode = $pass = $passRe ="";
+      $nameErr = $emailErr = $passErr = $numberErr = $messageErr = $nameReErr = $emailReErr = $passErr  ="";
           ?>  
   <!--top section page-------------------------------------------------------------------->
           <header class="navigation">
@@ -144,7 +200,7 @@
               }else{
                 switch($page){
                   case "contactF": // at form load form on page
-                    getForm(); 
+                    getContact(); 
                     break;
                   case "registerF": // at form load form on page
                     getRegister(); 
